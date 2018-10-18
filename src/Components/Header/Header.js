@@ -9,10 +9,10 @@ class Header extends Component {
       <div>
         <Grid container alignItems="center">
           <Grid item xs={12} className="header">
-            <Typography variant="h4" align="center">
-              <b>Staff Duty Management System (SDMS)&nbsp;</b>
+            <Typography variant="title" align="center">
+              Staff Duty Management System (SDMS)
               <br />
-              <b>職員更份管理系統&nbsp;</b>
+              職員更份管理系統
             </Typography>
             
           </Grid>

@@ -28,6 +28,7 @@ class Carlendar extends Component {
     };
     return result;
   };
+  
   renderWeek = () => {
     let weeks = this.generateWeek();
     weeks.map(listOfDates => {
@@ -38,15 +39,16 @@ class Carlendar extends Component {
       )
     })
   };
+  
   renderDate = (dates) => {
     dates.map(date => {
       return (
-        <Day>
+        <div>
           {date}
-        </Day>
+        </div>
       );
     })
-  }
+  };
 
   render() {
     
