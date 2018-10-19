@@ -1,18 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Header from './Components/Header/Header';
 import Calendar from './Components/Calendar/Calendar';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Header className="App-header">
+      <Fragment>
+        <Header>
         </Header>
         <Calendar>
         </Calendar>
-      </div>
+      </Fragment>
     );
   }
 }
+
+  
 
 export default App;

@@ -1,69 +1,67 @@
 import React, { Component } from 'react';
-import Day from './Components/Day/Day';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
+import CalendarHeader from './Components/CalendarHeader/CalendarHeader'
+import CalendarBody from './Components/CalendarBody/CalendarBody'
+
+import withStyles from '@material-ui/core/styles/withStyles';
 
 class Carlendar extends Component {
   constructor(){
     super()
     this.state = {
-      year: 2018,
-      month: 10
+      year: moment().year(),
+      month: moment().month()+1
     }
-  }
-  generateWeek = () => {
-    let monthStart = moment(`${this.state.year}-${this.state.month}-1`, "YYYY MM DD");
-    let currentDate = monthStart.clone().subtract(monthStart.day(), 'day');
-    let result = [];
-    for (let i=0; i<5; i++) {
-      let week= [];
-      for (let j=0; j<7; j++) {
-        week.push(currentDate)
-        currentDate.add(1, 'day');
-      };
-      result.push(week);
-      week = [];
-    };
-    return result;
   };
-  
-  renderWeek = () => {
-    let weeks = this.generateWeek();
-    weeks.map(listOfDates => {
-      return (
-        <div>
-          {this.renderDate(listOfDates)}
-        </div>
-      )
-    })
+
+  monthPrevious = () => {
+    let {year, month} = this.state;
+    month --;
+    if (month === 0) {
+      month = 12;
+      year --;
+    }
+    this.setState({year, month})
   };
-  
-  renderDate = (dates) => {
-    dates.map(date => {
-      return (
-        <div>
-          {date}
-        </div>
-      );
-    })
+
+  monthForward = () => {
+    let {year, month} = this.state;
+    month ++;
+    if (month === 13) {
+      month = 1;
+      year ++;
+    }
+    this.setState({year, month})
   };
 
   render() {
-    
+    const { classes } = this.props
     return (
-      <Paper>
-        <Typography variant="h6" align="center">
-          {`${this.state.year}-${this.state.month}`}
-        </Typography>
-        <div>
-          {this.renderWeek()}
-        </div>
+      <Paper className={classes.root}>
+        <Grid container direction="column">
+          <CalendarHeader
+            year={this.state.year}
+            month={this.state.month}
+            handlePrevious={this.monthPrevious}
+            handleForward={this.monthForward}
+          />
+
+          <CalendarBody
+             year={this.state.year}
+             month={this.state.month}
+          />
+        </Grid>
       </Paper>
     );
   }
 }
 
+const styles = () => ({
+  root: {
+    marginTop: 10
+  }
+});
 
-export default Carlendar;
+export default withStyles(styles)(Carlendar);

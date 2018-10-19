@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import createStyles from '@material-ui/core/styles/createStyles';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+
 import IconButton from '@material-ui/core/IconButton';
 
 class Day extends Component {
@@ -34,6 +34,7 @@ class Day extends Component {
 
     return (
       <IconButton
+        variant="outlined"
         className={className}
         tabIndex={hidden || disabled ? -1 : 0}
         {...other}
@@ -50,7 +51,10 @@ const styles = (theme) =>
       width: 36,
       height: 36,
       fontSize: theme.typography.caption.fontSize,
-      margin: '0 2px',
+      marginTop: '3vh',
+      marginBottom: '3vh',
+      marginLeft: '1vw',
+      marginRight: '1vw',
       color: theme.palette.text.primary,
       fontWeight: theme.typography.fontWeightMedium,
       padding: 0,

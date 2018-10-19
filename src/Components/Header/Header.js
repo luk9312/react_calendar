@@ -11,8 +11,6 @@ class Header extends Component {
           <Grid item xs={12} className="header">
             <Typography variant="title" align="center">
               Staff Duty Management System (SDMS)
-              <br />
-              職員更份管理系統
             </Typography>
             
           </Grid>
