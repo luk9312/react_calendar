@@ -1,67 +1,38 @@
-import React, { Component } from 'react';
-import Paper from '@material-ui/core/Paper';
+import React, { Component, Fragment } from 'react';
+// import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import moment from 'moment';
 import CalendarHeader from './Components/CalendarHeader/CalendarHeader'
 import CalendarBody from './Components/CalendarBody/CalendarBody'
 
-import withStyles from '@material-ui/core/styles/withStyles';
+import {Redirect}from 'react-router-dom';
 
-class Carlendar extends Component {
-  constructor(){
-    super()
-    this.state = {
-      year: moment().year(),
-      month: moment().month()+1
-    }
-  };
 
-  monthPrevious = () => {
-    let {year, month} = this.state;
-    month --;
-    if (month === 0) {
-      month = 12;
-      year --;
-    }
-    this.setState({year, month})
-  };
-
-  monthForward = () => {
-    let {year, month} = this.state;
-    month ++;
-    if (month === 13) {
-      month = 1;
-      year ++;
-    }
-    this.setState({year, month})
-  };
-
+class Calendar extends Component {
   render() {
-    const { classes } = this.props
+    const {isSelected, selectedDate, onClick, property, monthPrevious, monthForward} = this.props;
+    const {year, month} = property;
+    if (isSelected) {
+      return (<Redirect to={`/${selectedDate.split('-').join('')}`} />)
+    }
     return (
-      <Paper className={classes.root}>
-        <Grid container direction="column">
+      <Fragment>
+        <Grid container>
           <CalendarHeader
-            year={this.state.year}
-            month={this.state.month}
-            handlePrevious={this.monthPrevious}
-            handleForward={this.monthForward}
+            year={year}
+            month={month}
+            handlePrevious={monthPrevious}
+            handleForward={monthForward}
           />
-
           <CalendarBody
-             year={this.state.year}
-             month={this.state.month}
+            year={year}
+            month={month}
+            onhandleClick={onClick}
           />
         </Grid>
-      </Paper>
+      </Fragment>
     );
   }
 }
 
-const styles = () => ({
-  root: {
-    marginTop: 10
-  }
-});
 
-export default withStyles(styles)(Carlendar);
+export default Calendar;

@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import Day from '../Day/Day';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 function generateWeek ({year, month}) {
   let monthStart = moment(`${year}-${month}-1`, "YYYY-MM-DD");
@@ -20,19 +20,17 @@ function generateWeek ({year, month}) {
   return result;
 };
 
-function renderDate (dates) {
+function renderDate (dates, onhandleClick) {
   let currentDate = moment().format("YYYY-MM-DD");
-  console.log(currentDate);
   return (
     dates.map (date => {
-      let day = date.split('-')[2]
       return (
         <Grid item key={date}>
           <Day
+            date={date}
+            onhandleClick={onhandleClick}
             disabled={date < currentDate} 
-            current={date === currentDate}>
-            {day}
-          </Day>
+            current={date === currentDate}/>
         </Grid>
       );
     })
@@ -40,15 +38,16 @@ function renderDate (dates) {
 };
 
 function CalendarBody (props) {
+  const {classes, onhandleClick, ...others} = props
   const weekname = ['Su','Mo','Tu','We','Th','Fr','Sa']
-  let weeks = generateWeek(props);
+  let weeks = generateWeek(others);
   let weeknum = 0;
   return (
-    <Grid container item xs={12}>
+    <Grid container item xs={12} className={classes.root}>
       <Grid key={weeknum} container item xs={12} justify="center">
         {weekname.map(name => {
           return(
-            <Day key={name} disabled={true}>
+            <Day key={name} disabled={true} isTitle={true}>
               {name}
             </Day>
           )
@@ -58,7 +57,7 @@ function CalendarBody (props) {
         weeknum ++;
         return (
           <Grid key={weeknum} container item xs={12} justify="center">
-            {renderDate(week)}
+            {renderDate(week, onhandleClick)}
           </Grid>
         );
       })}
@@ -66,4 +65,10 @@ function CalendarBody (props) {
   )
 };
 
-export default CalendarBody;
+const styles = () => ({
+  root : {
+    marginTop: '-15px'
+  }
+})
+
+export default withStyles(styles)(CalendarBody);

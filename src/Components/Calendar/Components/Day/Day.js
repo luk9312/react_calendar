@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import createStyles from '@material-ui/core/styles/createStyles';
 import classnames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 import IconButton from '@material-ui/core/IconButton';
 
@@ -12,16 +14,18 @@ class Day extends Component {
     hidden: false,
     current: false,
     selected: false,
+    isTitle: false,
   };
 
   render() {
     const {
-      children,
       classes,
+      children,
       disabled,
       hidden,
       current,
       selected,
+      isTitle,
       ...other
     } = this.props;
 
@@ -30,34 +34,79 @@ class Day extends Component {
       [classes.current]: current,
       [classes.selected]: selected,
       [classes.disabled]: disabled,
+      [classes.isTitle]: isTitle,
     });
 
-    return (
-      <IconButton
-        variant="outlined"
-        className={className}
-        tabIndex={hidden || disabled ? -1 : 0}
-        {...other}
-      >
-        {children}
-      </IconButton>
-    )
+    let render;
+
+    if (isTitle) {
+      render = (<Title
+                  className={className}
+                  tabIndex={hidden || disabled ? -1 : 0}
+                  {...other}
+                > {children} </Title>)
+    } else {
+      render = (<Date
+                  disabled={disabled}
+                  className={className}
+                  tabIndex={hidden || disabled ? -1 : 0}
+                  {...other}
+                > </Date>)
+    }
+
+    return render
   }
 }
+
+const Title = (props) => {
+  const {className, tabIndex, children, ...other} = props;
+  return (
+    <IconButton
+      variant="outlined"
+      className={className}
+      tabIndex={tabIndex}
+      {...other}
+    >
+      {children}
+    </IconButton>
+  );
+};
+
+const Date = (props) => {
+  const {className, tabIndex, children, onhandleClick, date, disabled, ...other} = props;
+  let day = date.split('-')[2]
+  return (
+    <Paper
+      onClick={() => onhandleClick(date)}
+      variant="outlined"
+      className={className}
+      tabIndex={tabIndex}
+      {...other}
+    >
+      {day}
+      {
+        !disabled ? 
+          <Typography component="p" variant="caption" align="left">
+            DETAIL
+          </Typography> : null
+      }
+    </Paper>
+  );
+};
 
 const styles = (theme) =>
   createStyles({
     day: {
-      width: 36,
-      height: 36,
+      minHeight: 60,
+      width: '13vw',
+      height: '9vh',
       fontSize: theme.typography.caption.fontSize,
-      marginTop: '3vh',
-      marginBottom: '3vh',
-      marginLeft: '1vw',
-      marginRight: '1vw',
+      marginTop: '0.5vh',
+      marginButtom: '0.5vh',
+      marginLeft: '0.2vw',
+      marginRight: '0.2vw',
       color: theme.palette.text.primary,
       fontWeight: theme.typography.fontWeightMedium,
-      padding: 0,
     },
     hidden: {
       opacity: 0,
@@ -78,6 +127,10 @@ const styles = (theme) =>
     disabled: {
       pointerEvents: 'none',
       color: theme.palette.text.hint,
+    },
+    isTitle: {
+      margin: 0,
+      padding:0,
     },
 });
 
